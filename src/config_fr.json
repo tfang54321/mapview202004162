@@ -1,0 +1,29 @@
+{
+  "BLI_Under_Dev":{
+    "debugMsg":true,
+    "Dev_useDebugURL" :true,
+    "Dev_enabeDebugLog": true,
+    "Dev_debug_wmsURL1": "https://www.gebco.net/data_and_products/gebco_web_services/web_map_service/mapserv",
+    "Dev_debug_wmsURL": "https://maps.geogratis.gc.ca/wms/canvec_en",
+    "Dev_MenuOnly" :true,
+    "Dev_SimpleViewMap_only" : true,
+    "Dev_NoBaseMapOption":true,
+    "Dev_ShowOrigData": true
+  },
+  "wms_Load": "WMS layers",
+  "wms_load_completed" : " The WMS layers have been loaded(Demo----FRENCH)",
+  "wms_loadingErr_invalid" : " is an invalid URL!(Demo----FRENCH)",
+  "wms_loadingErr_dup" : " has been loaded previously!(Demo----FRENCH)",
+  "enable_AddNewMap": true,
+  "TwoBaseMapsOnly":true,
+  "baseMapControl":false,
+  "imageryBackground": "https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer",
+  "WMSFlatListOnly":false,
+  "WMSTopOLLayerOnly":false,
+  "homeLocaiton_lonLat":[-75.748191,45.328977],
+
+  "title": "French: ----- My Map Viewer",
+  "defaultZoom": 10,
+  "maxZoom": 20
+  
+}

@@ -1,0 +1,24 @@
+.sc-mapview-container{
+  position: absolute;
+  margin-bottom: 0px;
+  overflow: auto;
+  padding: 5px !important;
+  bottom: 0px;
+  top: 66px;
+  width: 97%;
+  color: #5b5b5b;
+}
+
+.sc-mapview-title {
+  margin-top: 15px;
+  margin-bottom: 0px !important;
+}
+
+.sc-mapview-divider {
+  border-bottom: 1px dashed #DDD;
+  margin: 5px;
+  color: transparent;
+  height: 1px;
+}
+
+

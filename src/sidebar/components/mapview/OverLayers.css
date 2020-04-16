@@ -1,0 +1,26 @@
+.mv-layer-slider{
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+  font-size: 10pt;
+  width: 160px;
+  margin-left: 5px !important;
+}
+
+.mv-layer-container {
+  max-width: 400px;
+  position: absolute;
+  /* BLI: reposition in order to add wms load option*/
+  width: 98%;
+  top: 320px;
+  bottom: 47px;
+  padding-top: 2px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+.mv-layer-none {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
