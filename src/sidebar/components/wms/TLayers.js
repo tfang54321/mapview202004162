@@ -4,18 +4,29 @@ import TLayerItm from "./TLayerItem";
 
 export default class TLayers extends Component {
 
-    render() {
+    // render() {
 
-        console.log(this.props.layers);
-        return  this.props.layers.map((layerItem) =>(
-            <TLayerItm>
-                key={uuid()} 
-                layerItem ={layerItem.object}
+    //     console.log(this.props.layers);
+    //     return  this.props.layers.map((layerItem) =>(
+    //         <TLayerItm>
+    //             key={uuid()} 
+    //             layerItem ={layerItem.object}
 
 
-            </TLayerItm>
+    //         </TLayerItm>
 
          
-        ));
-    };
+    //     ));
+    // };
+
+    render(){
+        return(
+
+<div>
+    "from tlayer"
+</div>
+
+        )
+    }
+
 }

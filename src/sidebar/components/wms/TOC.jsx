@@ -27,12 +27,6 @@ class TOC extends Component {
     super(props);
     this.storageMapDefaultsKey = "map_defaults";
     this.state = {
-      // containers:[{
-      //   id:'',
-      //   containerName:'',
-      //   layers:''}
-      // ],
-      containers:[],
       layerGroups: [], //all available layer groups
       selectedGroup: {}, //current selected group it should be one of item in "layerGroups"
       isLoading: false,  
@@ -43,18 +37,9 @@ class TOC extends Component {
       defaultGroup: undefined,
       layerCount: 0,
       newURLStr:"",
-      urlsLoaded:[],
+      urlsLoaded:[]
 
-          
-
-    layers :[
-        {
-            layerid: uuid(),
-            layerTitle:'',
-            siteinfo:''
-
-        }
-    ]
+           
     };
 
 
@@ -390,7 +375,11 @@ class TOC extends Component {
               group={this.state.selectedGroup}
               searchText={this.state.searchText}
               sortAlpha={this.state.sortAlpha}
-              allGroups={this.state.layerGroups}/>
+              allGroups={this.state.layerGroups}
+              
+              />
+
+
 
             
           </div>

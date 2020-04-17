@@ -83,7 +83,9 @@ class Layers extends Component {
   };
 
   componentWillUpdate() {
-    if (this.state.layers !== undefined) window.emitter.emit("layersLoaded", this.state.layers.length);
+
+  //  this.setState({ layers: this.props.layers, allLayers: this.props.allLayers });
+  //  if (this.state.layers !== undefined) window.emitter.emit("layersLoaded", this.state.layers.length);
   }
 //BLI: this function is used query the meta data information based on the single location
 //selected on the map view
@@ -212,20 +214,20 @@ class Layers extends Component {
   };
 
   // REFRESH IF PROPS FROM PARENT HAVE CHANGED - GROUPS DROP DOWN CHANGE.
-  componentWillReceiveProps(nextProps) {
-    //The nextProps.group is going to display; the "this.props.group" is a current group displayed.
-    let allLayers = this.state.allLayers;
-    if(nextProps===null || nextProps.group===undefined) return;
-    const nextLayers = allLayers[nextProps.group.value];
-    if (nextProps.sortAlpha !== this.props.sortAlpha) {
-      this.sortLayers(this.state.layers, nextProps.sortAlpha);
-    }
+  // componentWillReceiveProps(nextProps) {
+  //   //The nextProps.group is going to display; the "this.props.group" is a current group displayed.
+  //   let allLayers = this.state.allLayers;
+  //   if(nextProps===null || nextProps.group===undefined) return;
+  //   const nextLayers = allLayers[nextProps.group.value];
+  //   if (nextProps.sortAlpha !== this.props.sortAlpha) {
+  //     this.sortLayers(this.state.layers, nextProps.sortAlpha);
+  //   }
 
-    if (nextProps.group.value !== this.props.group.value) {
-      const layers = this.state.allLayers[this.props.group.value];
-       this.refreshLayers(nextProps.group, nextProps.sortAlpha,nextProps.allGroups);
-    }
-  }
+  //   if (nextProps.group.value !== this.props.group.value) {
+  //     const layers = this.state.allLayers[this.props.group.value];
+  //      this.refreshLayers(nextProps.group, nextProps.sortAlpha,nextProps.allGroups);
+  //   }
+  // }
 
   registerListRef = listInstance => {
     this.List = listInstance;
@@ -239,6 +241,7 @@ class Layers extends Component {
     }
 
     let { layers } = this.state;
+    
     this.setState(
       {
         layers: arrayMove(layers, oldIndex, newIndex)
@@ -570,8 +573,12 @@ class Layers extends Component {
   };
 
   render() {
-    if (this.state.layers === undefined) return <div />;
 
+    // this.setState({ layers: this.props.layers, allLayers: this.props.allGroups });
+   
+    if (this.state.layers === undefined) return <div />;
+     //  this.state.layers = this.props.layers;
+      //  this.state.allLayers = this.props.allGroup;
     // FILTER LAYERS FROM SEARCH INPUT
     const layers = this.state.layers.filter(layer => {
       if (this.props.searchText === "") return layer;
@@ -580,21 +587,23 @@ class Layers extends Component {
     });
 
     return (
-      <div className="sc-toc-layer-container">
-        <AutoSizer disableWidth>
-          {({ height }) => {
-            return (
+      // <div className="sc-toc-layer-container">
+      //  <AutoSizer disableWidth>
+     
+      //     {({ height }) => {
+      //       return (
               <SortableVirtualList
                 key={helpers.getUID()}
                 getRef={this.registerListRef}
                 ref={instance => {
                   this.SortableVirtualList = instance;
                 }}
-                items={layers}
+                items={this.props.layers}
                 onSortEnd={this.onSortEnd}
                 helperClass={"sc-layer-list-sortable-helper"}
-                rowHeight={height}
-                height={height}
+                rowHeight={100}
+                // height={height}
+                height={100}
                 lockAxis={"y"}
                 onSortMove={this.onSortMove}
                 distance={5}
@@ -603,12 +612,13 @@ class Layers extends Component {
                 searchText={this.props.searchText}
                 onLayerOptionsClick={this.onLayerOptionsClick}
                 sortAlpha={this.props.sortAlpha}
-                //scrollToIndex={50}
+              //  scrollToIndex={50}
               />
-            );
-          }}
-        </AutoSizer>
-      </div>
+        //     );
+        //   }}
+          
+        // </AutoSizer>
+      //  </div>
     );
   }
 }

@@ -3,12 +3,14 @@ import ContainerItem from './ContainerItem';
 import uuid from "react-uuid";
 import * as TOCHelpers from "./TOCHelpers.jsx";
 import * as WMSControl from "./wmsLayerControl";
+import { isMobile } from "react-device-detect";
 
 export default class Containers extends Component {
     constructor(props) {
         super(props);
-
     this.state = {
+      searchText: "",
+      sortAlpha: this.getInitialSort(), //function to sort item of each group
         containers:[],
         allLayers: {},//all layer groups contained 
         layers: [] //the layers are displaying in the list area
@@ -22,13 +24,10 @@ export default class Containers extends Component {
     let allLayers = this.state.allLayers;
     if(nextProps===null || nextProps.group===undefined) return;
     const nextLayers = allLayers[nextProps.group.value];
-    console.log('nexlayers');
-
-    this.refreshLayers(nextProps.group, nextProps.sortAlpha,nextProps.allGroups);
-
+    this.refreshLayers(nextProps.group, nextProps.allGroups);
   }
 
-  refreshLayers = (group, sortAlpha, allGroups) => {
+  refreshLayers = (group, allGroups) => {
     let layers = [];
     layers = this.state.allLayers[group.value];
 
@@ -43,34 +42,25 @@ export default class Containers extends Component {
         let containertemp = this.state.containers;
         const fetchGroups = (allGroups) => {
             allGroups.forEach(groupItem => {
-             
             if (group.value !== groupItem.value) {
               let layersItems = this.state.allLayers[groupItem.value];
               if (layersItems === undefined) {
                 //BLI: this line should be modified to keep "groupItem.sublayers" only.
                 layersItems = groupItem.layers!==undefined?groupItem.layers:groupItem.sublayers;
-                
                 if (layersItems !== undefined) {
                   let allLayers = this.state.allLayers;
                   allLayers[groupItem.value] = layersItems;
                 }
               }
-           
             }
-          
           });
         }
         fetchGroups(allGroups);
         let containerGroups=this.state.containers;
         allGroups.forEach(goupeTemp => {
-
-
-     
-            containerGroups.push({id:uuid(),containerName:goupeTemp.label,layers:this.state.allLayers[group.value]})
-
-          
-            });
-        this.setState({ containers:containerGroups });
+            containerGroups.push({id:uuid(),containerName:goupeTemp.label,layers:this.state.allLayers[goupeTemp.value], displayLayers: false,group:group})
+                   });
+        this.setState({ containers:containerGroups,  allLayers: allLayers });
 
 
         //this.setState({ layers: layers, allLayers: allLayers });
@@ -111,30 +101,39 @@ export default class Containers extends Component {
   //   }
   // };
 
+
+  getInitialSort = () => {
+    if (isMobile) return true;
+    else return false;
+  };
+
+
   markComplete = (id) => {
-  
       this.setState({  
       todos: this.state.containers.map(container_temp => {
         if (container_temp.id === id) {
-          if (container_temp.layers.length > 0) {
-              container_temp.layers = "";
+          if (container_temp.displayLayers ) {
+              container_temp.displayLayers = false;
           } else {
-
-            container_temp.layers  =  this.state.containers.layers;
-         
+            container_temp.displayLayers  =  true;
           }
         }
-            container_temp.layers  =  this.state.containers.layers;
             return container_temp;
       })
     });
   };
     render() {
       return this.state.containers.map(todo =>(
-        <ContainerItem key={todo.id} containerItem={todo}   markComplete={this.markComplete}   />
+        <ContainerItem
+         key={todo.id} 
+         containerItem={todo}   
+         markComplete={this.markComplete} 
+         searchText={this.state.searchText} 
+         sortAlpha={this.state.sortAlpha}
+         layerGroups={this.state.allLayers} 
+         group={todo.group}  
+                        
+         />
     ));
-           
-    }
-
-
+   }
 }

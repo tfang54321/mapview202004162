@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Layers from './Layers';
 import TLayerItem from './TLayerItem';
-import TLayers from './TLayers'
+import TLayers from './TLayers';
+import { List, AutoSizer } from "react-virtualized";
 
 export default class ContainerItem extends Component {
 
@@ -9,26 +10,41 @@ export default class ContainerItem extends Component {
     render() {
 
 
-      const {id,containerName,layers} = this.props.containerItem;
-      let  layerslength = layers.length;
+      const {id,containerName,layers,displayLayers} = this.props.containerItem;
+      let  displayLayersTemp = this.props.containerItem.displayLayers;
 
       return (
-         
+
+          
             <div style={this.getStyle()}>
               <button
                 type="button"
-                style={layerslength > 0 ? this.getStyle1() : this.getStyle2()}
-                onClick={this.props.markComplete.bind(this, id,containerName)}
+                style={displayLayersTemp? this.getStyle1() : this.getStyle2()}
+                onClick={this.props.markComplete.bind(this, id)}
               ></button>
               {""}
              {containerName}
-             {layerslength > 0 ? <TLayers layers={layers} /> : ""}
+             {/* {displayLayersTemp ? <TLayers layers={layers} /> : ""} */}
+{displayLayersTemp ? 
+             <Layers
+               ref={ref => {
+                this.layerRef = ref;
+              }}
+              group={this.props.group}
+              searchText={this.props.searchText}
+              sortAlpha={this.props.sortAlpha}
+              allGroups={this.props.layerGroups}
+              layers={this.props.containerItem.layers}
+            />:"" }
            
          
            </div>
+    
          );
        }
    
+
+
 
     getStyle = () => {
         return {
