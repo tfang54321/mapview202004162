@@ -837,12 +837,12 @@ export function swapLayers(layers,oldIndex,newIndex)
     if(layers[newIndex].layer) {
       layers[newIndex].layer.setZIndex(layers[newIndex].drawIndex);
     }
-    for (let index = newIndex-1; index <= oldIndex; index--) {
-      layers[index].drawIndex++;//make sure it is on above
-      if(layers[index].layer) {
-        layers[index].layer.setZIndex(layers[index].drawIndex);
-      }
-    }
+    // for (let index = newIndex-1; index <= oldIndex; index--) {
+    //   layers[index].drawIndex++;//make sure it is on above
+    //   if(layers[index].layer) {
+    //     layers[index].layer.setZIndex(layers[index].drawIndex);
+    //   }
+    // }
   }
   else { //going up 
     //swap the drawIndex first;

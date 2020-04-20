@@ -10,7 +10,7 @@ export default class Containers extends Component {
         super(props);
     this.state = {
       searchText: "",
-      sortAlpha: this.getInitialSort(), //function to sort item of each group
+       sortAlpha: false, //function to sort item of each group
         containers:[],
         allLayers: {},//all layer groups contained 
         layers: [] //the layers are displaying in the list area
@@ -58,9 +58,9 @@ export default class Containers extends Component {
         fetchGroups(allGroups);
         let containerGroups=this.state.containers;
         allGroups.forEach(goupeTemp => {
-            containerGroups.push({id:uuid(),containerName:goupeTemp.label,layers:this.state.allLayers[goupeTemp.value], displayLayers: false,group:group})
+            containerGroups.push({id:uuid(),containerName:goupeTemp.label,layers:this.state.allLayers[goupeTemp.value],displayLayers: false,group:group})
                    });
-        this.setState({ containers:containerGroups,  allLayers: allLayers });
+        this.setState({ containers:containerGroups,  allLayers: allLayers});
 
 
         //this.setState({ layers: layers, allLayers: allLayers });
@@ -85,22 +85,6 @@ export default class Containers extends Component {
   };
 
 
-  // sortLayers = (layers, sortAlpha, callback = undefined) => {
-  //   if(layers && layers.length>0) {
-  //     let newLayers = Object.assign([{}], layers);
-  //     if (sortAlpha) newLayers.sort(this.sortByAlphaCompare);
-  //     else newLayers.sort(this.sortByIndexCompare);
-
-  //     let allLayers = this.state.allLayers;
-  //     allLayers[this.props.group.value] = newLayers;
-
-  //     this.setState({ layers: newLayers, allLayers: allLayers }, () => {
-  //       window.allLayers = this.state.allLayers;
-  //       if (callback !== undefined) callback();
-  //     });
-  //   }
-  // };
-
 
   getInitialSort = () => {
     if (isMobile) return true;
@@ -114,24 +98,47 @@ export default class Containers extends Component {
         if (container_temp.id === id) {
           if (container_temp.displayLayers ) {
               container_temp.displayLayers = false;
+              // container_temp.notdisplay=false;
           } else {
             container_temp.displayLayers  =  true;
+            // container_temp.notdisplay=true;
           }
         }
             return container_temp;
       })
     });
   };
+
+
+  
+  turnOffLayers = () => {
+    WMSControl.turnOffLayers(this.state.layers, newLayers => {
+      let allLayers = this.state.allLayers;
+      allLayers[this.props.group.value] = newLayers;
+      this.setState({ layers: newLayers, allLayers: allLayers }, () => {});
+    });
+  };
+
+  turnOnLayers = () => {
+    WMSControl.enableLayersVisiblity(this.state.layers, newLayers => {
+      let allLayers = this.state.allLayers;
+      allLayers[this.props.group.value] = newLayers;
+      this.setState({ layers: newLayers, allLayers: allLayers }, () => {});
+    });
+  };
+
+ 
     render() {
       return this.state.containers.map(todo =>(
-        <ContainerItem
+        <ContainerItem  
          key={todo.id} 
          containerItem={todo}   
          markComplete={this.markComplete} 
          searchText={this.state.searchText} 
-         sortAlpha={this.state.sortAlpha}
+         sortAlpha={this.props.sortAlpha}
          layerGroups={this.state.allLayers} 
-         group={todo.group}  
+         group={todo.group} 
+        
                         
          />
     ));

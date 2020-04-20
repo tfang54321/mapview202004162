@@ -3,15 +3,15 @@ import Layers from './Layers';
 import TLayerItem from './TLayerItem';
 import TLayers from './TLayers';
 import { List, AutoSizer } from "react-virtualized";
+import arrayMove from "array-move";
 
 export default class ContainerItem extends Component {
-
-
+ 
     render() {
-
+      
 
       const {id,containerName,layers,displayLayers} = this.props.containerItem;
-      let  displayLayersTemp = this.props.containerItem.displayLayers;
+       let  displayLayersTemp = this.props.containerItem.displayLayers;
 
       return (
 
@@ -27,14 +27,14 @@ export default class ContainerItem extends Component {
              {/* {displayLayersTemp ? <TLayers layers={layers} /> : ""} */}
 {displayLayersTemp ? 
              <Layers
-               ref={ref => {
-                this.layerRef = ref;
-              }}
+             
               group={this.props.group}
               searchText={this.props.searchText}
               sortAlpha={this.props.sortAlpha}
               allGroups={this.props.layerGroups}
               layers={this.props.containerItem.layers}
+              containers={this.props.containerItem}
+            
             />:"" }
            
          

@@ -30,7 +30,9 @@ class Layers extends Component {
     this.storageKey = "layers";
     this.lastPosition = null;
     this.virtualId = "sc-toc-virtual-layers";
-    this.state = {
+    this.layerstemp=[];
+      this.state = {
+        sortAlpha: false,
       allLayers: {},//all layer groups contained 
       layers: [] //the layers are displaying in the list area
     };
@@ -555,38 +557,45 @@ class Layers extends Component {
 
     helpers.showMessage("Save", "Layer Visibility has been saved.");
   };
+  //follow code have been moved to containers.js
+  // turnOffLayers = () => {
+  //   WMSControl.turnOffLayers(this.state.layers, newLayers => {
+  //     let allLayers = this.state.allLayers;
+  //     allLayers[this.props.group.value] = newLayers;
+  //     this.setState({ layers: newLayers, allLayers: allLayers }, () => {});
+  //   });
+  // };
 
-  turnOffLayers = () => {
-    WMSControl.turnOffLayers(this.state.layers, newLayers => {
-      let allLayers = this.state.allLayers;
-      allLayers[this.props.group.value] = newLayers;
-      this.setState({ layers: newLayers, allLayers: allLayers }, () => {});
-    });
-  };
+  // turnOnLayers = () => {
+  //   WMSControl.enableLayersVisiblity(this.state.layers, newLayers => {
+  //     let allLayers = this.state.allLayers;
+  //     allLayers[this.props.group.value] = newLayers;
+  //     this.setState({ layers: newLayers, allLayers: allLayers }, () => {});
+  //   });
+  // };
 
-  turnOnLayers = () => {
-    WMSControl.enableLayersVisiblity(this.state.layers, newLayers => {
-      let allLayers = this.state.allLayers;
-      allLayers[this.props.group.value] = newLayers;
-      this.setState({ layers: newLayers, allLayers: allLayers }, () => {});
-    });
-  };
+
+  componentWillReceiveProps(nextProps){
+    this.setState({ layers: this.props.layers, allLayers: this.props.allGroups });
+  }
+
 
   render() {
-
-    // this.setState({ layers: this.props.layers, allLayers: this.props.allGroups });
+    
+    if (this.state.layers === undefined || this.state.layers.length===0) this.setState({ layers: this.props.layers,allLayers:this.props.allGroups }, () => {
+      this.sortLayers(this.state.layers);
+    });
    
-    if (this.state.layers === undefined) return <div />;
-     //  this.state.layers = this.props.layers;
-      //  this.state.allLayers = this.props.allGroup;
+    
     // FILTER LAYERS FROM SEARCH INPUT
-    const layers = this.state.layers.filter(layer => {
+      const layers = this.state.layers.filter(layer => {
       if (this.props.searchText === "") return layer;
 
       if (layer.displayName.toUpperCase().indexOf(this.props.searchText.toUpperCase()) !== -1) return layer;
     });
 
     return (
+      
       // <div className="sc-toc-layer-container">
       //  <AutoSizer disableWidth>
      
@@ -598,7 +607,7 @@ class Layers extends Component {
                 ref={instance => {
                   this.SortableVirtualList = instance;
                 }}
-                items={this.props.layers}
+                items={layers}
                 onSortEnd={this.onSortEnd}
                 helperClass={"sc-layer-list-sortable-helper"}
                 rowHeight={100}

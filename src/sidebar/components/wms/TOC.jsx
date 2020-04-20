@@ -11,7 +11,7 @@ import { isMobile } from "react-device-detect";
 import "./TOC.css";
 import * as helpers from "../../../helpers/helpers";
 import * as TOCHelpers from "./TOCHelpers.jsx";
-import Layers from "./Layers.jsx";
+// import Layers from "./Layers.jsx";
 import FloatingMenu, { FloatingMenuItem } from "../../../helpers/FloatingMenu.jsx";
 import { Item as MenuItem } from "rc-menu";
 import Portal from "../../../helpers/Portal.jsx";
@@ -38,7 +38,6 @@ class TOC extends Component {
       layerCount: 0,
       newURLStr:"",
       urlsLoaded:[]
-
            
     };
 
@@ -114,10 +113,17 @@ class TOC extends Component {
   };
 
   onAllLayersVisibilityChange = allLayersOn => {
+
+ 
     // const selectedGroup = this.state.selectedGroup;
+
+    this.setState({ allLayersOn: allLayersOn});
+
+
     this.setState({ allLayersOn: allLayersOn}, () => {
       setTimeout(() => {
         if(allLayersOn===false){
+          
           this.layerRef.turnOffLayers();
         }
         else{
@@ -370,19 +376,18 @@ class TOC extends Component {
 
             <div>
 
-  <Containers   containers={this.state.containers} 
-              layerRef={this.layerRef} 
+  <Containers    ref={ref => {
+      this.layerRef = ref;
+    }}
+  
+  containers={this.state.containers} 
               group={this.state.selectedGroup}
               searchText={this.state.searchText}
               sortAlpha={this.state.sortAlpha}
               allGroups={this.state.layerGroups}
-              
+                           
               />
-
-
-
-            
-          </div>
+       </div>
         
 
           <div className="sc-toc-footer-container">
@@ -410,171 +415,6 @@ class TOC extends Component {
     }
     return content;
   }
-
-
-  // markComplete = (id,containerName,group,allGroups) => {
-  //   let layers = [];
-  
-  //   this.setState({
-  //     containers: this.state.containers.map(todo => {
-      
-  //       if (todo.id === id) {
-        
-
-  //         if (todo.layers.length > 0) {
-  //           todo.layers = "";
-  //         } else {
-  //           // todo.layers = this.renderSwitch(containerName);
-  //           todo.layers = this.state.layers;
-  //         }
-  //       }
-  //       return todo;
-  //     })
-  //   });
-  // };
-
-  // renderSwitch(param) {
-  //   switch (param) {
-  //     case "canvec : All Hydro Features":
-  //       return this.state.layertodos_hydro;
-  //     case "canvec: All Man-Made Features":
-  //       return this.state.layertodos_man_made;
-  //     case "canvec: canvec: All Transport Features":
-  //       return this.state.layertodos_transport;
-       
-  //     case 'GOV Canada - Topographic data of canada':
-  //       return this.state.layers;
-  //       default:
-  //        return this.state.layertodos;
-  //   }
-  // }
-
-//   getLayers(containerName){
-
-//     let layers = [];
-    
-//     this.state.layerGroups.map(layerGroup => {
-//       layerGroup.layers.map(layer =>{
-//        if(containerName === layer.groupName){
-//         layers.push(obj);
-            
-//    }
-   
-// );   });
-
-
-
-
-
-//   }
-
-  // getGroupList(){
-  // let items=[];
-  // // allLayerGroups.forEach(type => {
-  // //   const obj = { id:uuid(),containerName: type.label };
-  // //   items.push(obj);
-  // // });
-  // let layers = this.state.layerGroups
-  // this.state.layerGroups.map(layerGroup => {
-  //        layerGroup.layers.map(layer =>{
-  //         const obj = layer.groupName ;
-  //         items.push(obj);
-               
-  //     }
-      
-  //  );   });
-
-  //      let items3=[];
-  //     let items2= Array.from(new Set(items));
-  //     items2.forEach(mm =>{
-  //       const obj = {id:uuid(), containerName: mm ,layers:'',selectedGroup:'',allLayerGroups:''};
-  //       items3.push(obj);
-      
-  //     });
-
-  //     return items3;
-  //   }
-
-  //   getGroupList(){
-  //     let items=[];
-  //     // allLayerGroups.forEach(type => {
-  //     //   const obj = { id:uuid(),containerName: type.label };
-  //     //   items.push(obj);
-  //     // });
-  //     let layers = this.state.layerGroups
-  //     this.state.layerGroups.map(layerGroup => {
-  //            layerGroup.layers.map(layer =>{
-  //             const obj = layer.groupName ;
-  //             items.push(obj);
-                   
-  //         }
-          
-  //      );   });
-    
-  //          let items3=[];
-  //         let items2= Array.from(new Set(items));
-  //         items2.forEach(mm =>{
-  //           const obj = {id:uuid(), containerName: mm ,layers:'',selectedGroup:'',allLayerGroups:''};
-  //           items3.push(obj);
-          
-  //         });
-    
-  //         return items3;
-  //       }
-    
-
-  
-  // getcallback(){
-
-  //   sessionStorage.removeItem(this.storageMapDefaultsKey); 
-  //   let geoserverUrl= this.state.newURLStr;
-  //   let curWMSList= this.state.urlsLoaded;
-  //   if(geoserverUrl.toLowerCase().indexOf("getcapabilities")===-1 )
-  //   {
-  //     geoserverUrl +='?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities';             
-  //   }
-  //   // window.emitter.emit("startLoadingSym");
-  //   WMSControl.getWMSLayerGroupList(geoserverUrl,"root" ,result => {
-  //     const groupInfo = result;
-  //     //keep the new URLs;
-  //     if(result===null)
-  //     {
-  //       // window.emitter.emit("stopLoadingSym");
-  //       let msg=`"${this.state.wmsNewURL}"`+window.appConfig.wms_loadingErr_invalid;
-  //       helpers.showMessage(window.appConfig.wms_Load,msg,'gray', 20000);
-  //       return;
-  //     }
-  //     let allLayerGroups=this.state.layerGroups;
-  //     curWMSList.push(geoserverUrl);
-  //     //Keep all new wms groups
-  //     groupInfo[0].forEach(element => {
-  //       allLayerGroups.push(element);
-  //     });
-  //     //udate all layers (for DEMO purpose)
-  //     let newDefault= groupInfo[1]!==undefined?groupInfo[1]:this.state.defaultGroup;
-  //     let newSelectedGrp= groupInfo[1]!==undefined?groupInfo[1]:this.state.selectedGroup;
-   
-          
-  //     this.setState( 
-        
-  //       {
-  //         containers:allLayerGroups,
-      
-  //       },
-  //       () => { //callback
-  //         //wms layer query completed
-  //           window.emitter.emit("stopLoadingSym");
-           
-  //         }
-  //     );
-
-  //    // return allLayerGroups;
-  //   });
-  // }
-
-
-
-
 }
 
 export default TOC;
